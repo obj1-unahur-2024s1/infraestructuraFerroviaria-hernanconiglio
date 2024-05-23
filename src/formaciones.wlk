@@ -18,7 +18,7 @@ class Formacion {
 	method vagonMasPesado() = vagones.max({v=>v.pesoMaximo()})
 	method vagonMasLiviano() = vagones.min({v=>v.pesoMaximo()})
 	method dispersionDePesos() = self.vagonMasPesado().pesoMaximo() - self.vagonMasLiviano().pesoMaximo()
-	method cantidadDeBanios() = vagones.count({v=>v.tieneBanio()})
+	method cantidadDeBanios() = vagones.count({v=>v.tieneBanios()})
 	
 	method hacerMantenimiento() {
 		vagones.forEach({v=>v.recibirMantenimiento()})
@@ -27,10 +27,13 @@ class Formacion {
 	method vagonConMasPasajeros() = self.vagonesConPasajeros().max({v=>v.cantidadDePasajeros()})
 	method vagonConMenosPasajeros() = self.vagonesConPasajeros().min({v=>v.cantidadDePasajeros()})
 	method estaEquilibrada() = 
-		self.vagonConMasPasajeros().cantidadDePasajeros() - self.vagonConMenosPasajeros().cantidadDePasajeros() < = 20
+		self.vagonConMasPasajeros().cantidadDePasajeros() - self.vagonConMenosPasajeros().cantidadDePasajeros() <= 20
 	
 	method estaOrganizada() {
-		return not (1..vagones.size()-1).any({i=> not vagones.get(i-1).esDePasajeros() and vagones.get(i).esDePasajeros()})
+		if (vagones.size()>=2) {
+			return not (1..vagones.size()-1).any({i=> not vagones.get(i-1).esDePasajeros() and vagones.get(i).esDePasajeros()})
+		}
+		else {return true}
 	}
 		
 }
